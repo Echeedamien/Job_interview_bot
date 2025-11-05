@@ -11,3 +11,5 @@ docx2txt
 whisper
 pydub
 gunicorn
+SpeechRecognition==3.10.0
+
