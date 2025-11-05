@@ -10,3 +10,4 @@ PyPDF2
 docx2txt
 whisper
 pydub
+gunicorn
