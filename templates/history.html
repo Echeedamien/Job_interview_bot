@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Interview History</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Your Past Interview Practice Sessions</h1>
+
+    {% if history %}
+        <ul>
+            {% for item in history %}
+                <li>
+                    <strong>{{ item.role }}</strong><br>
+                    Question: {{ item.question }}<br>
+                    Your answer: {{ item.answer }}<br>
+                    Score: {{ item.score }}/4
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No past sessions yet. Try answering some questions!</p>
+    {% endif %}
+
+    <p><a href="/">Back to Practice</a></p>
+</body>
+</html>

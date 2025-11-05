@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resume Analysis Results</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h2>Resume Analysis Results</h2>
+
+    {% if detected_skills %}
+        <h3>Detected Skills:</h3>
+        <ul>
+        {% for skill in detected_skills %}
+            <li>{{ skill }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No skills detected automatically.</p>
+    {% endif %}
+
+    {% if questions %}
+        <h3>Suggested Interview Questions:</h3>
+        <ul>
+        {% for q in questions %}
+            <li>{{ q }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No questions generated yet.</p>
+    {% endif %}
+
+    <p><a href="/">← Back to Practice</a></p>
+
+</body>
+</html>

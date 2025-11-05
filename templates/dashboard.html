@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Interview Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            background: #f4f7fa;
+            font-family: "Segoe UI", sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+            margin-top: 40px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .skill-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+            width: 30%;
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .skill-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .metric {
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        .nav {
+            background: #007bff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+        }
+
+        .nav a:hover {
+            text-decoration: underline;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-top: 30px;
+        }
+
+        .back-btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="/">🏠 Home</a>
+        <a href="/mock">🎙️ Mock Interview</a>
+        <a href="/analyze_resume">📄 Analyze Resume</a>
+        <a href="/voice_analytics">🎤 Voice Analytics</a>
+        <a href="/logout" style="color:#ffdede;">🚪 Logout</a>
+    </div>
+
+    <div class="container">
+        <h1>📊 Your Skill Progress</h1>
+        <p>Average Score: <strong>{{ avg_score }}</strong></p>
+
+        {% if skills %}
+            {% for s in skills %}
+                <div class="skill-card">
+                    <div class="skill-title">{{ s.name }}</div>
+                    <div class="metric">Average Score: {{ s.avg }}/3</div>
+                    <div class="metric">Answers: {{ s.count }}</div>
+                    <a href="/skill/{{ s.name }}" class="back-btn" style="margin-top:10px;">View</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No data yet. Go practice some interviews!</p>
+        {% endif %}
+    </div>
+    <p><a href="/skill/Resume-Based Mock">📘 View Resume-Based Mock</a></p>
+</body>
+</html>

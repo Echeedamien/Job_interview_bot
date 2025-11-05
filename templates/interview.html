@@ -1,0 +1,24 @@
+<h2>Interview Practice</h2>
+
+{% if question %}
+  <div id="question-box">
+    <p><strong>Question:</strong> {{ question }}</p>
+  </div>
+{% else %}
+  <p>No question available. <a href="/next_question">Get a new one</a></p>
+{% endif %}
+
+<form method="POST" action="/submit_answer">
+  <textarea name="answer" rows="6" cols="60" placeholder="Type your answer here..." required></textarea><br><br>
+  <button type="submit">Submit Answer</button>
+</form>
+
+{% if feedback %}
+  <div style="margin-top:20px; padding:10px; border:1px solid #ccc;">
+    <h3>Feedback</h3>
+    <p>{{ feedback }}</p>
+    <p><strong>Score:</strong> {{ score }}/10</p>
+  </div>
+{% endif %}
+
+<p><a href="/next_question">Next Question</a></p>
