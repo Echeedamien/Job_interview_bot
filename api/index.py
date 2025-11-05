@@ -34,20 +34,29 @@ nlp = spacy.load("en_core_web_sm")
 print("🔍 Initializing Whisper model…")
 
 try:
-    # Try to load from local cache folder (fully offline)
-    model_path = os.path.expanduser(r"C:\Users\HP\.cache\whisper\small.pt")
+    import whisper
+    import torch
 
-    if os.path.exists(model_path):
-        print("📁 Found local model file — loading directly.")
-        whisper_model = whisper.load_model("tiny")
-        print("✅ Whisper model loaded successfully.")
+    # Detect environment: local (has GPU/CPU) vs hosted (Vercel/Render)
+    running_on_server = os.getenv("VERCEL", False) or os.getenv("RENDER", False)
+
+    if running_on_server:
+        # 🪶 Skip heavy model loading in production environment
+        whisper_model = None
+        print("⚠️ Running on server — Whisper voice transcription disabled to prevent build failure.")
     else:
-        print("⚠️ Model not found locally — downloading from official source.")
-        whisper_model = whisper.load_model("small")
-        print("✅ Whisper model downloaded and loaded successfully.")
+        # ✅ Load Whisper locally
+        model_path = os.path.expanduser(r"C:\Users\HP\.cache\whisper\small.pt")
+        if os.path.exists(model_path):
+            print("📁 Found local Whisper model — loading offline.")
+            whisper_model = whisper.load_model("small")
+        else:
+            print("⬇️ Downloading Whisper model (first-time setup)...")
+            whisper_model = whisper.load_model("small")
+        print("✅ Whisper initialized successfully.")
 
 except Exception as e:
-    print(f"❌ Whisper model loading failed: {e}")
+    print("❌ Whisper could not be initialized:", e)
     whisper_model = None
 
 # ============================================================
@@ -598,11 +607,13 @@ def voice_answer():
         file_path = os.path.join("uploads", "temp_voice.webm")
         file.save(file_path)
 
-        # ✅ Local Whisper transcription
-        import whisper
-        model = whisper.load_model("base")
-        result = model.transcribe(file_path)
-        text = result.get("text", "").strip()
+        # ✅ Local Whisper transcription (skip if unavailable)
+if whisper_model:
+    result = whisper_model.transcribe(file_path)
+    text = result.get("text", "").strip()
+else:
+    print("⚠️ Whisper not available — skipping transcription.")
+    text = "[Voice transcription disabled on server]"
 
         os.remove(file_path)
 
@@ -700,4 +711,5 @@ def resume_mock_start():
 # 🚀 RUN
 # ============================================================
 if __name__ == "__main__":
+
     app.run(debug=True)
